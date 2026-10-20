@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#087bd6">
+<title>Kishvanth's Doraemon Agent 💙</title>
+<style>
+:root{--blue:#0785df;--deep:#0756a6;--pale:#eaf7ff;--ink:#17324b;--white:#fff;--shadow:0 18px 50px #003e7724}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(circle at 12% 12%,#bfeaff 0,transparent 27%),linear-gradient(145deg,#e6f7ff,#f8fcff 55%,#d9efff);min-height:100vh}
+.shell{max-width:1040px;margin:auto;padding:18px;min-height:100vh;display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:14px;padding:12px 4px 18px}
+.logo{width:62px;height:62px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:var(--shadow);flex-shrink:0}
+.logo svg{width:55px;height:55px}
+.brand h1{font-size:clamp(1.25rem,4vw,1.9rem);margin:0;color:var(--deep);letter-spacing:-.04em}
+.brand p{margin:3px 0 0;color:#52738c;font-size:.92rem}
+.badge{margin-left:auto;background:#d7f7e7;color:#12663e;padding:7px 11px;border-radius:30px;font-size:.78rem;font-weight:700;white-space:nowrap}
+main{display:grid;grid-template-columns:260px 1fr;gap:18px;flex:1;min-height:0}
+aside,.chat{background:#ffffffd9;border:1px solid #ffffff;border-radius:24px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+aside{padding:20px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.mascot{width:180px;max-width:100%;margin:2px auto 8px}
+aside h2{font-size:1.2rem;margin:6px 0;color:var(--deep)}
+aside p{font-size:.9rem;line-height:1.5;color:#52738c;margin:4px 0 16px}
+.setting{width:100%;text-align:left;margin:8px 0}
+.setting label{display:block;font-size:.8rem;font-weight:750;margin-bottom:6px;color:#31536e}
+select,input{font:inherit}
+select{width:100%;border:1px solid #c7e3f4;border-radius:12px;padding:10px;background:#fff;color:var(--ink)}
+.smallbtn{border:1px solid #c7e3f4;background:#f4fbff;color:var(--deep);padding:9px 12px;border-radius:12px;font-weight:700;cursor:pointer}
+.note{font-size:.75rem;color:#718ca1;margin-top:auto;padding-top:14px}
+.chat{display:flex;flex-direction:column;overflow:hidden;min-height:590px}
+.chathead{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid #e1f0f9;background:#ffffffa8}
+.online{width:10px;height:10px;border-radius:50%;background:#24bf75;box-shadow:0 0 0 4px #dff8eb}
+.chathead strong{font-size:1rem}.chathead small{display:block;color:#718ca1;margin-top:2px}
+#messages{padding:20px;display:flex;flex-direction:column;gap:13px;flex:1;overflow-y:auto;max-height:calc(100vh - 270px);min-height:340px}
+.msg{max-width:88%;padding:12px 15px;border-radius:18px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.95rem}
+.msg.bot{align-self:flex-start;background:#eef8ff;border:1px solid #d9efff;border-bottom-left-radius:5px}
+.msg.user{align-self:flex-end;background:linear-gradient(135deg,#0785df,#0864bd);color:white;border-bottom-right-radius:5px}
+.msg .who{display:block;font-size:.72rem;font-weight:800;margin-bottom:4px;opacity:.72}
+.typing{font-size:.85rem;color:#66859a;padding:0 20px 10px;display:none}
+.quick{display:flex;gap:8px;flex-wrap:wrap;padding:0 16px 12px}
+.quick button{border:1px solid #cde8f7;background:#f5fbff;border-radius:30px;padding:8px 11px;color:#245b83;font-size:.8rem;cursor:pointer}
+.composer{display:flex;gap:9px;padding:14px;border-top:1px solid #e1f0f9;background:#ffffffba}
+#prompt{flex:1;min-width:0;border:1px solid #c7e3f4;border-radius:16px;padding:13px 14px;outline:none;background:#fff}
+#prompt:focus{border-color:var(--blue);box-shadow:0 0 0 3px #0785df1a}
+.iconbtn,.sendbtn{border:0;border-radius:15px;padding:0 15px;min-height:48px;font-size:1.05rem;cursor:pointer}
+.iconbtn{background:#e7f5ff;color:#075fa9}.sendbtn{background:var(--blue);color:#fff;font-weight:800;padding:0 20px}
+button:disabled{opacity:.5;cursor:not-allowed}
+footer{text-align:center;color:#7591a6;font-size:.75rem;padding:14px 0 2px}
+@media(max-width:760px){.shell{padding:10px}header{padding:8px 3px 12px}.badge{display:none}main{grid-template-columns:1fr;gap:12px}aside{padding:12px 15px;display:grid;grid-template-columns:72px 1fr;column-gap:12px;text-align:left;align-items:center}.mascot{width:72px;grid-row:span 2;margin:0}.logo{width:50px;height:50px}.logo svg{width:45px;height:45px}.setting{grid-column:1/-1;margin:7px 0}.note{grid-column:1/-1;padding-top:6px}.chat{min-height:62vh}#messages{max-height:none;min-height:270px;padding:14px}.msg{max-width:94%}.composer{padding:10px;gap:6px}.iconbtn{padding:0 12px}.sendbtn{padding:0 15px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+  <div class="logo" aria-hidden="true">
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#149be8" stroke="#075eae" stroke-width="3"/><ellipse cx="50" cy="57" rx="30" ry="27" fill="#fff"/><ellipse cx="39" cy="39" rx="5" ry="8" fill="#fff"/><ellipse cx="61" cy="39" rx="5" ry="8" fill="#fff"/><circle cx="40" cy="41" r="3" fill="#142c3b"/><circle cx="60" cy="41" r="3" fill="#142c3b"/><ellipse cx="50" cy="49" rx="6" ry="5" fill="#ef4b56"/><path d="M50 54v12M50 64Q38 76 28 62M50 64Q62 76 72 62" fill="none" stroke="#17324b" stroke-width="2.4" stroke-linecap="round"/><path d="M25 50L43 53M23 58L41 58M26 66L42 62M75 50L57 53M77 58L59 58M74 66L58 62" stroke="#17324b" stroke-width="1.8" stroke-linecap="round"/><path d="M23 78Q50 89 77 78" fill="none" stroke="#ef4b56" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="77" r="6" fill="#ffd84d" stroke="#d99b13" stroke-width="2"/></svg>
+  </div>
+  <div class="brand"><h1>Kishvanth's Doraemon Agent 💙</h1><p>Your friendly Tamil + English AI helper</p></div>
+  <div class="badge">● Ready to help</div>
+</header>
+<main>
+  <aside>
+    <svg class="mascot" viewBox="0 0 220 230" role="img" aria-label="Original blue robotic cat helper illustration">
+      <ellipse cx="110" cy="215" rx="66" ry="9" fill="#b5dff3"/>
+      <path d="M54 58L41 14Q40 7 48 12L83 38M166 58L179 14Q180 7 172 12L137 38" fill="#0785d8" stroke="#075ca9" stroke-width="4" stroke-linejoin="round"/>
+      <ellipse cx="110" cy="105" rx="70" ry="75" fill="#149be8" stroke="#075ca9" stroke-width="4"/>
+      <ellipse cx="110" cy="126" rx="57" ry="49" fill="#fff"/>
+      <ellipse cx="88" cy="82" rx="10" ry="15" fill="#fff"/><ellipse cx="132" cy="82" rx="10" ry="15" fill="#fff"/>
+      <circle cx="90" cy="85" r="5" fill="#17324b"/><circle cx="130" cy="85" r="5" fill="#17324b"/>
+      <ellipse cx="110" cy="101" rx="10" ry="8" fill="#f04b58"/><path d="M110 109V139M110 135Q89 160 72 136M110 135Q131 160 148 136" fill="none" stroke="#17324b" stroke-width="3" stroke-linecap="round"/>
+      <path d="M63 107L93 112M60 121L91 121M65 135L93 130M157 107L127 112M160 121L129 121M155 135L127 130" stroke="#17324b" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M48 166Q110 190 172 166L180 198Q110 224 40 198Z" fill="#149be8" stroke="#075ca9" stroke-width="4"/>
+      <path d="M48 169Q110 190 172 169" fill="none" stroke="#f04b58" stroke-width="8"/>
+      <circle cx="110" cy="177" r="12" fill="#ffd84d" stroke="#c68a09" stroke-width="3"/>
+      <ellipse cx="37" cy="153" rx="15" ry="18" fill="#fff" stroke="#075ca9" stroke-width="3"/><ellipse cx="183" cy="153" rx="15" ry="18" fill="#fff" stroke="#075ca9" stroke-width="3"/>
+      <path d="M78 199Q64 211 79 216H100M142 199Q156 211 141 216H120" fill="#fff" stroke="#075ca9" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <div><h2>Vanakkam, Kishvanth!</h2><p>Ask me about school, science projects, coding, or anything you're curious about.</p></div>
+    <div class="setting"><label for="language">Chat language</label><select id="language"><option>Tamil + English</option><option>Tamil</option><option>English</option></select></div>
+    <div class="setting"><label for="voice">Voice replies</label><select id="voice"><option value="on">On</option><option value="off">Off</option></select></div>
+    <button class="smallbtn" id="clearBtn" type="button">Clear this chat</button>
+    <div class="note">Your chat is saved only in this browser. Voice features depend on your browser and device.</div>
+  </aside>
+  <section class="chat" aria-label="Chat with Doraemon Agent">
+    <div class="chathead"><span class="online"></span><div><strong>Doraemon Agent</strong><small id="status">Say hi, Kishvanth!</small></div></div>
+    <div id="messages" aria-live="polite"></div>
+    <div class="typing" id="typing">Doraemon is thinking…</div>
+    <div class="quick">
+      <button type="button" data-prompt="Explain photosynthesis simply in Tamil and English.">🌱 Science help</button>
+      <button type="button" data-prompt="Give me 5 easy school project ideas using simple materials.">🔬 Project ideas</button>
+      <button type="button" data-prompt="Teach me a simple JavaScript concept with an example.">💻 Coding</button>
+    </div>
+    <form class="composer" id="chatForm">
+      <button class="iconbtn" type="button" id="micBtn" title="Speak" aria-label="Speak">🎙️</button>
+      <input id="prompt" maxlength="2500" autocomplete="off" placeholder="Type a message, Kishvanth…" aria-label="Your message">
+      <button class="sendbtn" id="sendBtn" type="submit">Send ➤</button>
+    </form>
+  </section>
+</main>
+<footer>Made for Kishvanth · Blue helper theme · Keep your API key private</footer>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+const messagesEl = $("messages");
+const languageEl = $("language");
+const voiceEl = $("voice");
+const promptEl = $("prompt");
+let history = [];
+let busy = false;
+const CACHE_KEY = "kishvanth_doraemon_cache_v1";
+const HISTORY_KEY = "kishvanth_doraemon_history_v1";
+let cache = {};
+try { cache = JSON.parse(localStorage.getItem(CACHE_KEY) || "{}"); } catch {}
+try {
+  const saved = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+  if (Array.isArray(saved)) history = saved.slice(-24);
+} catch {}
+
+function saveState() {
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(-24)));
+    localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+  } catch {}
+}
+function addMessage(role, content, speak=false) {
+  const div = document.createElement("div");
+  div.className = "msg " + (role === "assistant" ? "bot" : "user");
+  const who = document.createElement("span");
+  who.className = "who";
+  who.textContent = role === "assistant" ? "Doraemon 💙" : "Kishvanth";
+  const body = document.createElement("div");
+  body.textContent = content;
+  div.append(who, body);
+  messagesEl.appendChild(div);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  if (speak && voiceEl.value === "on") speakText(content);
+}
+function speakText(text) {
+  if (!("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = languageEl.value === "Tamil" ? "ta-IN" : "en-IN";
+  utterance.rate = 0.95;
+  const voices = window.speechSynthesis.getVoices();
+  const desired = languageEl.value === "Tamil" ? /^ta/i : /^en/i;
+  const match = voices.find(v => desired.test(v.lang));
+  if (match) utterance.voice = match;
+  window.speechSynthesis.speak(utterance);
+}
+function renderHistory() {
+  messagesEl.innerHTML = "";
+  if (!history.length) {
+    addMessage("assistant", "Vanakkam, Kishvanth! 💙 I'm your friendly AI helper. You can chat with me in Tamil, English, or Tanglish. Select a language and ask me anything!");
+    return;
+  }
+  history.forEach(m => addMessage(m.role, m.content));
+}
+async function sendMessage(text) {
+  text = String(text || "").trim();
+  if (!text || busy) return;
+  busy = true;
+  $("sendBtn").disabled = true;
+  $("micBtn").disabled = true;
+  promptEl.value = "";
+  history.push({role:"user", content:text});
+  addMessage("user", text);
+  $("typing").style.display = "block";
+  $("status").textContent = "Thinking…";
+  const cacheKey = languageEl.value + "::" + text.toLocaleLowerCase().trim();
+  try {
+    let reply = cache[cacheKey];
+    if (!reply) {
+      const response = await fetch("/api/chat", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({messages:history.slice(-12), language:languageEl.value})
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Could not connect to the AI.");
+      reply = data.reply;
+      // Cache only exact repeated questions to avoid repeat requests and save data.
+      cache[cacheKey] = reply;
+    } else {
+      $("status").textContent = "Answered from saved cache";
+    }
+    history.push({role:"assistant", content:reply});
+    addMessage("assistant", reply, true);
+    saveState();
+    $("status").textContent = "Ready for your next question";
+  } catch (err) {
+    const friendly = err.message.includes("Failed to fetch")
+      ? "I can't reach the server yet. If you're running this on your computer, start it with npm start. If it is online, check the hosting setup."
+      : err.message;
+    addMessage("assistant", "Oops, Kishvanth! " + friendly);
+    $("status").textContent = "Connection needs attention";
+  } finally {
+    $("typing").style.display = "none";
+    busy = false;
+    $("sendBtn").disabled = false;
+    $("micBtn").disabled = false;
+    promptEl.focus();
+  }
+}
+$("chatForm").addEventListener("submit", e => { e.preventDefault(); sendMessage(promptEl.value); });
+document.querySelectorAll("[data-prompt]").forEach(btn => btn.addEventListener("click", () => sendMessage(btn.dataset.prompt)));
+$("clearBtn").addEventListener("click", () => {
+  history = [];
+  try { localStorage.removeItem(HISTORY_KEY); } catch {}
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  renderHistory();
+  $("status").textContent = "New chat started";
+});
+$("micBtn").addEventListener("click", () => {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    addMessage("assistant", "Voice input isn't supported in this browser. Try Chrome on Android, or type your message instead.");
+    return;
+  }
+  const recognition = new SpeechRecognition();
+  recognition.lang = languageEl.value === "Tamil" ? "ta-IN" : "en-IN";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+  $("status").textContent = "Listening…";
+  recognition.onresult = e => { promptEl.value = e.results[0][0].transcript; sendMessage(promptEl.value); };
+  recognition.onerror = () => { $("status").textContent = "Mic unavailable — you can type instead"; };
+  recognition.onend = () => { if ($("status").textContent === "Listening…") $("status").textContent = "Ready"; };
+  recognition.start();
+});
+renderHistory();
+</script>
+</body>
+</html>
